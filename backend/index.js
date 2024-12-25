@@ -2,6 +2,7 @@ const connectToMongo = require('./db');
 const express = require('express');
 
 const app = express();
+app.use(express.json());
 const PORT = 5000;
 
 connectToMongo(); 
