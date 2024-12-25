@@ -4,11 +4,9 @@ const express = require('express');
 const app = express();
 const PORT = 5000;
 
-connectToMongo(); // Call the function to connect to MongoDB
+connectToMongo(); 
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+app.use('/api/auth',require('./routes/auth'));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
