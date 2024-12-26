@@ -15,10 +15,12 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  date: { // Changed from "Date" to "date"
+  date: { 
     type: Date,
-    default: Date.now, // No parentheses here
+    default: Date.now,
   },
 });
 
-module.exports = mongoose.model('User', UserSchema);
+const User =mongoose.model('User', UserSchema);
+User.createIndexes();
+module.exports = User;
