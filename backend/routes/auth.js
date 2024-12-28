@@ -103,6 +103,8 @@ router.post(
   }
 );
 
+
+// Route :3 Get user info :Auth Req :POST 
 router.post("/getuser", fetchuser, async (req, res) => {
   try {
     // Fetch the userId from the middleware's added property
