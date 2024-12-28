@@ -36,6 +36,7 @@ router.post('/newNote', fetchuser,[
         title,description,tag,user:req.user.id
       });
       const savedNote=await note.save();
+      res.send(savedNote);
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
