@@ -3,8 +3,10 @@ const router=express.Router();
 const { body, validationResult } = require('express-validator');
 const User=require('../models/User');
 const bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 
 
+const secret_key ='MayankSuperKing';
 // POST MAPPING
 // Create a new User @POST => /api/auth
 // Validation added Express js
@@ -28,8 +30,17 @@ user= await User.create({
 name:req.body.name,
 email:req.body.email,
 password:setPass,
-})
-res.json(user);
+});
+
+const data={
+user:{
+  id:user.id
+}
+}
+const authToken = jwt.sign(data,secret_key);
+res.json({authToken});
+
+// res.json(user);
 }
 catch(error){
     res.status(500).send("Some error Occured");
