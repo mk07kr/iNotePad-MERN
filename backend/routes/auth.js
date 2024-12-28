@@ -4,11 +4,14 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
+const fetchuser = require("../middleware/fetchuser");
 
 const secret_key = "MayankSuperKing";
+
 // POST MAPPING
 // Create a new User @POST => /api/auth/signup
 // Validation added Express js
+// ROUTE 1:
 router.post(
   "/signup",
   [
@@ -52,6 +55,7 @@ router.post(
 );
 
 // Login User with credentials @POST => /api/auth/login
+// ROUTE 2:
 router.post(
   "/login",
   [
@@ -98,5 +102,22 @@ router.post(
     }
   }
 );
+
+router.post("/getuser", fetchuser, async (req, res) => {
+  try {
+    // Fetch the userId from the middleware's added property
+    const userId = req.user.id;
+
+    // Find the user by ID and exclude the password
+    const user = await User.findById(userId).select("-password");
+
+    // Send the user data
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // Export
 module.exports = router;
