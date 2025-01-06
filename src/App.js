@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/home";
 import About from "./components/about";
+import NoteState from './context/noteState';
 
 function App() {
   return (
     <>
+    <NoteState/>
       <Router>
         <Navbar />
         <div className="container">
