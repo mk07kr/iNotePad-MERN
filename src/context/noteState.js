@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import noteContext from "./noteContext";
 
 const NoteState = (props) => {
-  // Sample state for notes
+  // Read Notes
   const noteInitial=[]
   const [notes, setNotes] = useState(noteInitial);
+
+   // Add a note
+
+   // Delete Note
+
+   // Edit/Update Note
+
 
   return (
     <noteContext.Provider value={{ notes, setNotes }}>
