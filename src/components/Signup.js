@@ -26,8 +26,10 @@ const Signup = () => {
     const json = await response.json();
     console.log(json);
     // Save the auth token and redirect
-    localStorage.setItem("token", json.authtoken);
-    navigate("/login");
+    if (json.success) {
+      localStorage.setItem("token", json.authtoken);
+      navigate("/login");
+    }
   };
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -81,7 +83,7 @@ const Signup = () => {
             required
             minLength={7}
           />
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="cpassword" className="form-label">
             Confirm Password
           </label>
           <input
