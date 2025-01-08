@@ -13,7 +13,8 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": "",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
       },
     });
 
@@ -28,7 +29,8 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": "",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -57,10 +59,33 @@ const NoteState = (props) => {
   };
 
   // Edit/Update Note
-  const editNote = (id, title, description, tag) => {};
+  const editNote = async (id, title, description, tag) => {
+    // API Call
+    const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
+      },
+      body: JSON.stringify({ title, description, tag }),
+    });
+    const json = response.json();
 
+    // Logic to edit in client
+    for (let index = 0; index < notes.length; index++) {
+      const element = notes[index];
+      if (element._id === id) {
+        element.title = title;
+        element.description = description;
+        element.tag = tag;
+      }
+    }
+  };
   return (
-    <noteContext.Provider value={{ notes, addNote, editNote, deleteNote }}>
+    <noteContext.Provider
+      value={{ notes, addNote, editNote, deleteNote, getNotes }}
+    >
       {props.children}
     </noteContext.Provider>
   );
