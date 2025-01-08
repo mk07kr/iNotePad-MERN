@@ -3,12 +3,36 @@ import noteContext from "./noteContext";
 
 const NoteState = (props) => {
   // Read Notes
+  const host = "http://localhost:5000";
   const noteInitial = [];
   const [notes, setNotes] = useState(noteInitial);
 
+  // Fetch All Notes
+  const getNotes = async () => {
+    const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": "",
+      },
+    });
+
+    const json = await response.json();
+    setNotes(json);
+  };
+
   // Add a note
-  const addNote = (title, description, tag) => {
+  const addNote = async (title, description, tag) => {
     // TODO: API Call
+    const response = await fetch(`${host}/api/notes/addnote`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": "",
+      },
+      body: JSON.stringify({ title, description, tag }),
+    });
+
     console.log("Adding a new note");
     const note = {
       _id: "61322f119553781a8ca8d0e08",
