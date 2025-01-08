@@ -3,8 +3,8 @@ import noteContext from "../context/noteContext";
 
 const NoteItem = (props) => {
   const context = useContext(noteContext);
-  const { deleteNote, editNote } = context; // Destructure both functions from context
-  const { note,updateNote } = props;
+  const { deleteNote } = context; // Destructure both functions from context
+  const { note, updateNote } = props;
 
   return (
     <div className="col-md-4" key={note._id}>
@@ -16,7 +16,10 @@ const NoteItem = (props) => {
             <p className="card-text">
               <strong>Tag:</strong> {note.tag}
             </p>
-            <button className="btn btn-primary" onClick={() => updateNote(note)}>
+            <button
+              className="btn btn-primary"
+              onClick={() => updateNote(note)}
+            >
               <i className="bi bi-pencil-square"></i> Edit
             </button>
             <button

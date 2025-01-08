@@ -40,7 +40,8 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
 
-    console.log("Adding a new note");
+    const json = await response.json();
+    console.log(json);
     const note = {
       _id: "61322f119553781a8ca8d0e08",
       user: "6131dc5e3e4037cd4734a0664",
@@ -78,9 +79,9 @@ const NoteState = (props) => {
   };
 
   const editNote = async (note) => {
-    const {_id,title,description,tag}=note;
+    const { _id, title, description, tag } = note;
+  
     try {
-      // API Call
       const response = await fetch(`${host}/api/notes/updateNote/${_id}`, {
         method: "PUT",
         headers: {
@@ -91,28 +92,29 @@ const NoteState = (props) => {
         body: JSON.stringify({ title, description, tag }),
       });
   
-      // Get response JSON data
       const json = await response.json();
-      
+      console.log("Response from server:", json);
   
       if (response.ok) {
-        // Update the note in the client-side state
-        setNotes((prevNotes) =>
-          prevNotes.map((note) =>
-            note._id === _id
-              ? { ...note, title, description, tag }  // Update the note
-              : note
-          )
-        );
-        console.log(json);
+        let newNotes = JSON.parse(JSON.stringify(notes));
+        for (let index = 0; index < newNotes.length; index++) {
+          if (newNotes[index]._id === _id) {
+            newNotes[index].title = title;
+            newNotes[index].description = description;
+            newNotes[index].tag = tag;
+            break;
+          }
+        }
+        setNotes(newNotes);
       } else {
-        console.error('Error updating note:', json.error);
+        console.error("Error updating note:", json.error);
       }
     } catch (error) {
-      console.error('Failed to edit note:', error);
+      console.error("Failed to edit note:", error);
     }
   };
   
+
   return (
     <noteContext.Provider
       value={{ notes, addNote, editNote, deleteNote, getNotes }}
