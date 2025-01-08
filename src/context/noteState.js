@@ -23,10 +23,17 @@ const NoteState = (props) => {
   };
 
   // Delete Note
-  const deleteNote = () => {};
+  const deleteNote = (id) => {
+    // TODO: API Call
+    console.log("Deleting the note with id" + id);
+    const newNotes = notes.filter((note) => {
+      return note._id !== id;
+    });
+    setNotes(newNotes);
+  };
 
   // Edit/Update Note
-  const editNote = () => {};
+  const editNote = (id, title, description, tag) => {};
 
   return (
     <noteContext.Provider value={{ notes, addNote, editNote, deleteNote }}>

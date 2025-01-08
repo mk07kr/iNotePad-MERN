@@ -7,7 +7,7 @@ const Navbar = () => {
     console.log(location.pathname);
   } ,[location]);
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-dark">
     <div className="container-fluid">
       <Link className="navbar-brand" to="/">iNoteBook</Link>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" 

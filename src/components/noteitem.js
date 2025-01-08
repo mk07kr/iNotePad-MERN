@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import noteContext from "../context/noteContext";
 
 const noteitem = (props) => {
+  const context = useContext(noteContext);
+  const { deleteNote } = context;
   const { note } = props;
   return (
     <>
@@ -13,9 +16,14 @@ const noteitem = (props) => {
               <i className="bi bi-pencil"></i> Edit
             </button>
             <button className="btn btn-danger">
-              <i className="bi bi-trash"></i> Delete
+              <i
+                className="bi bi-trash"
+                onClick={() => {
+                  deleteNote(note._id);
+                }}
+              ></i>{" "}
+              Delete
             </button>
-
           </div>
         </div>
       </div>

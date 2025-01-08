@@ -11,7 +11,8 @@ const Notes = () => {
     return <p>No context available. Please check your Provider.</p>;
   }
 
-  const { notes } = context;
+  // const { notes , addNote} = context;
+  const {notes} = context;
 
   return (
     <>
