@@ -40,17 +40,7 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
 
-    const json = await response.json();
-    console.log(json);
-    const note = {
-      _id: "61322f119553781a8ca8d0e08",
-      user: "6131dc5e3e4037cd4734a0664",
-      title: title,
-      description: description,
-      tag: tag,
-      date: "2025-01-08T14:20:09.668Z",
-      __v: 0,
-    };
+    const note = await response.json();
     setNotes(notes.concat(note));
   };
 
@@ -80,7 +70,7 @@ const NoteState = (props) => {
 
   const editNote = async (note) => {
     const { _id, title, description, tag } = note;
-  
+
     try {
       const response = await fetch(`${host}/api/notes/updateNote/${_id}`, {
         method: "PUT",
@@ -91,10 +81,10 @@ const NoteState = (props) => {
         },
         body: JSON.stringify({ title, description, tag }),
       });
-  
+
       const json = await response.json();
-      console.log("Response from server:", json);
-  
+      // console.log("Response from server:", json);
+
       if (response.ok) {
         let newNotes = JSON.parse(JSON.stringify(notes));
         for (let index = 0; index < newNotes.length; index++) {
@@ -113,7 +103,6 @@ const NoteState = (props) => {
       console.error("Failed to edit note:", error);
     }
   };
-  
 
   return (
     <noteContext.Provider

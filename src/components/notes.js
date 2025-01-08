@@ -17,7 +17,7 @@ const Notes = () => {
     id: "",
     etitle: "",
     edescription: "",
-    etag: ""
+    etag: "",
   });
   const updateNote = (currentNote) => {
     ref.current.click();
@@ -37,13 +37,11 @@ const Notes = () => {
     });
     refClose.current.click();
   };
-  
-  
+
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
     console.log(note);
   };
-  
 
   return (
     <>
@@ -91,10 +89,12 @@ const Notes = () => {
                     value={note.etitle}
                     aria-describedby="emailHelp"
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="description" className="form-label">
+                  <label htmlFor="edescription" className="form-label">
                     Description
                   </label>
                   <input
@@ -104,6 +104,8 @@ const Notes = () => {
                     name="edescription"
                     value={note.edescription}
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -123,6 +125,9 @@ const Notes = () => {
             </div>
             <div className="modal-footer">
               <button
+                disabled={
+                  note.etitle.length < 5 || note.edescription.length < 5
+                }
                 type="button"
                 ref={refClose}
                 className="btn btn-secondary"
