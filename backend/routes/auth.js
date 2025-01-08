@@ -20,16 +20,17 @@ router.post(
     body("password").isLength({ min: 7 }),
   ],
   async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ success, errors: errors.array() });
     }
     try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
         return res
           .status(400)
-          .json({ error: "User already exists with this email" });
+          .json({ success, error: "User already exists with this email" });
       }
       const salt = await bcrypt.genSalt();
       const setPass = await bcrypt.hash(req.body.password, salt);
@@ -45,7 +46,8 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, secret_key);
-      res.json({ authToken });
+      success = true;
+      res.json({ success, authToken });
 
       // res.json(user);
     } catch (error) {
@@ -68,7 +70,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    let success = false;
     const { email, password } = req.body;
 
     try {
@@ -77,13 +79,12 @@ router.post(
       if (!user) {
         return res
           .status(400)
-          .json({ error: "Invalid credentials, try again!" });
+          .json({ success, error: "Invalid credentials, try again!" });
       }
 
       // Compare passwords
       const passMatch = await bcrypt.compare(password, user.password);
       if (!passMatch) {
-        success = false;
         return res
           .status(400)
           .json({ success, error: "Invalid credentials, try again!" });
