@@ -4,7 +4,7 @@ import noteContext from "../context/noteContext";
 const NoteItem = (props) => {
   const context = useContext(noteContext);
   const { deleteNote, editNote } = context; // Destructure both functions from context
-  const { note } = props;
+  const { note,updateNote } = props;
 
   return (
     <div className="col-md-4" key={note._id}>
