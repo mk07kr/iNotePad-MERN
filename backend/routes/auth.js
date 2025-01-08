@@ -83,9 +83,10 @@ router.post(
       // Compare passwords
       const passMatch = await bcrypt.compare(password, user.password);
       if (!passMatch) {
+        success = false;
         return res
           .status(400)
-          .json({ error: "Invalid credentials, try again!" });
+          .json({ success, error: "Invalid credentials, try again!" });
       }
 
       // Generate JWT token
@@ -95,7 +96,8 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, secret_key);
-      res.json({ authToken });
+      success = true;
+      res.json({ success, authToken });
     } catch (error) {
       console.error("Error during login:", error.message);
       res.status(500).send("Internal Server Error");
@@ -103,8 +105,7 @@ router.post(
   }
 );
 
-
-// Route :3 Get user info :Auth Req :POST 
+// Route :3 Get user info :Auth Req :POST
 router.post("/getuser", fetchuser, async (req, res) => {
   try {
     // Fetch the userId from the middleware's added property
