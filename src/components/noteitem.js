@@ -16,7 +16,7 @@ const NoteItem = (props) => {
             <p className="card-text">
               <strong>Tag:</strong> {note.tag}
             </p>
-            <button className="btn btn-primary" onClick={() => editNote(note)}>
+            <button className="btn btn-primary" onClick={() => updateNote(note)}>
               <i className="bi bi-pencil-square"></i> Edit
             </button>
             <button
