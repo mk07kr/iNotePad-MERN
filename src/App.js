@@ -5,10 +5,10 @@ import Home from "./components/home";
 import About from "./components/about";
 import NoteState from './context/noteState';
 
+
 function App() {
   return (
-    <>
-    <NoteState/>
+    <NoteState>
       <Router>
         <Navbar />
         <div className="container">
@@ -19,7 +19,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </>
+      </NoteState>
   );
 }
 
