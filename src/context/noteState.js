@@ -15,7 +15,7 @@ const NoteState = (props) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "auth-token":
+          Authorization:
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
         },
       });
@@ -34,7 +34,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
+        Authorization:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
       },
       body: JSON.stringify({ title, description, tag }),
@@ -54,40 +54,65 @@ const NoteState = (props) => {
   };
 
   // Delete Note
-  const deleteNote = (id) => {
-    // TODO: API Call
-    console.log("Deleting the note with id" + id);
-    const newNotes = notes.filter((note) => {
-      return note._id !== id;
-    });
-    setNotes(newNotes);
-  };
+  const deleteNote = async (id) => {
+    try {
+      // Send DELETE request to the backend
+      const response = await fetch(`${host}/api/notes/deleteNote/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
+        },
+      });
 
-  // Edit/Update Note
-  const editNote = async (id, title, description, tag) => {
-    // API Call
-    const response = await fetch(`${host}/api/notes/updateNote/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
-      },
-      body: JSON.stringify({ title, description, tag }),
-    });
-    const json = response.json();
-
-    // Logic to edit in client
-
-    for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
-      if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
       }
+
+      // Filter the deleted note from local state
+      setNotes(notes.filter((note) => note._id !== id));
+    } catch (error) {
+      console.error("Failed to delete note:", error);
     }
   };
+
+  const editNote = async (note) => {
+    const {_id,title,description,tag}=note;
+    try {
+      // API Call
+      const response = await fetch(`${host}/api/notes/updateNote/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjc2ZmMyOGU3ZjFhNTg5MmM3MjI1M2IyIn0sImlhdCI6MTczNTM3NzYyMX0.NafUYWstKBM07o3AlIwekDPGWPl9EfFpdR1BsFN4dKI",
+        },
+        body: JSON.stringify({ title, description, tag }),
+      });
+  
+      // Get response JSON data
+      const json = await response.json();
+      
+  
+      if (response.ok) {
+        // Update the note in the client-side state
+        setNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note._id === _id
+              ? { ...note, title, description, tag }  // Update the note
+              : note
+          )
+        );
+        console.log(json);
+      } else {
+        console.error('Error updating note:', json.error);
+      }
+    } catch (error) {
+      console.error('Failed to edit note:', error);
+    }
+  };
+  
   return (
     <noteContext.Provider
       value={{ notes, addNote, editNote, deleteNote, getNotes }}
