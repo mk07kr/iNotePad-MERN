@@ -10,7 +10,7 @@ const Notes = (props) => {
     getNotes();
     // eslint-disable-next-line
   }, []);
-
+  const {showAlert}=props;
   const ref = useRef(null);
   const refClose = useRef(null);
   const [note, setNote] = useState({
@@ -46,7 +46,7 @@ const Notes = (props) => {
 
   return (
     <>
-      <AddNote showAlert={props.showAlert} />
+      <AddNote showAlert={showAlert} />
       <button
         ref={ref}
         type="button"
