@@ -16,6 +16,7 @@ const AddNote = () => {
       description: "",
       tag: "",
     });
+    props.showAlert("Note Added Successfully", "success");
   };
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
