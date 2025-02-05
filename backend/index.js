@@ -7,14 +7,14 @@ app.use(express.json());
 const PORT = 5000;
 
 connectToMongo();
-// app.use(cors());
-// const cors = require("cors");
+app.use(cors());
 
-app.use(cors({
-  origin: "http:localhost:3000",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+
+// app.use(cors({
+//   origin: "http:localhost:3000",
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   credentials: true,
+// }));
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/notes", require("./routes/note"));
