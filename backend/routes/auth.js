@@ -97,8 +97,10 @@ router.post(
         },
       };
       const authToken = jwt.sign(data, secret_key);
+      // const Id=user.id;
       success = true;
-      res.json({ success, authToken });
+      res.json({ success,authToken});
+
     } catch (error) {
       console.error("Error during login:", error.message);
       res.status(500).send("Internal Server Error");
