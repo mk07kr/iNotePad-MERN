@@ -96,7 +96,8 @@ router.post(
           id: user.id,
         },
       };
-      const authToken = jwt.sign(data, secret_key);
+      const authToken = jwt.sign(data, secret_key, { expiresIn: '3h' });
+
       // const Id=user.id;
       success = true;
       res.json({ success,authToken});
